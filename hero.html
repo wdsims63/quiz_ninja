@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Hero Form</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <form action="" id="hero">
+        <label for="name" class="break">Name:</label>
+        <input type="text" name="name" autofocus placeholder="Your Super Hro Name" maxlength="32" required>
+        <label for="realName" class="break">Real Name:</label><input type="password" name="realName">
+        <p>Super Powers</p>
+        <label for="flight">Flight:</label><input type="checkbox" value="Flight" name="powers">
+        <label for="Strength">Strength:</label><input type="checkbox" value="Strength" name="powers">
+        <label for="speed">Super Speed:</label><input type="checkbox" value="speed" name="powers">
+        <label for="Energy">Energy Blasts:</label><input type="checkbox" value="Energy" name="powers">
+        <label for="telekinesis">Telekinesis:</label><input type="checkbox" value="telekinesis" name="powers">
+        <p>What type of hero are you?</p>
+        <label for="hero">Hero:</label><input type="radio" name="heroType" value="Hero">
+        <label for="villain">Villain:</label><input type="radio" name="heroType" value="Villain">
+        <label for="antihero">Anti-Hero:</label><input type="radio" name="heroType" value="Anti-hero">
+        <label for="age" class="break">Age:</label><input type="number" name="age" min=0 step=1>
+        <label for="City" class="break">Base of Operation:</label>
+        <select name="city" id="city">
+            <option value="" selected>Choose a City</option>
+            <option value="Metrolpolis" selected>Metropolis</option>
+            <option value="Gotham City">Gotham City</option>
+            <option value="Keystone City">Keystone City</option>
+            <option value="Coast City">Coast City</option>
+            <option value="Star City">Star City</option>
+        </select>
+        <label for="origin" class="break">Origin Story</label><textarea name="origin" id="origin" cols="60" rows="30"></textarea>
+        
+        <button type="submit">Submit</button>
+    </form>
+    
+    <script src="js/heroform.js"></script>
+</body>
+</html>

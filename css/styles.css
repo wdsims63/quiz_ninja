@@ -1,0 +1,78 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+
+header {
+    font: bold 36px/150% Areal, Helvetica, sans-serif;
+    background: #333;
+    color: #00c;
+    text-transform: uppercase;
+}
+
+body {
+    width: 450px;
+    margin: 0 auto;
+    background: #fff;
+    height: 100vh;
+}
+
+html {
+    background: #444;
+}
+
+section p {
+    font: bold 24px/150% Areal, Helvetica, sans-serif;
+    background: #ccc;
+    border: #999 2px solid;
+    color: #666;
+    text-align: center;
+    padding: 10px;
+    margin: 10px auto;
+    width: 300px;
+}
+
+.correct {
+    background: #0c0;
+    border: #090 2px solid;
+    color: #060;
+}
+
+.wrong {
+    background: #c00;
+    border: #900 2px solid;
+    color: #600;
+}
+
+input, button {
+    font: bold 24px/150% Arial, Helvetica, sans-serif;
+    display: block;
+    width: 300px;
+    padding: 10px;
+    margin: 10px auto;
+}
+
+label.break {
+    display: block;
+}
+
+form {
+    display: block;
+}
+
+.shown {
+    display: block;
+}
+
+.hidden {
+    display: none;
+}
+
+.error {
+    background: #f99;
+    border: #900 1px solid;
+}
+
+#timer {
+    text-align: center;
+}
