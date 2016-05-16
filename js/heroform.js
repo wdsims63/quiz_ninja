@@ -2,6 +2,21 @@ var $form = document.forms.hero;
 var i;
 
 //Hero Form Scripts
+function submitHero(event) {
+    event.preventDefault();
+    var form = event.target;
+    var data = new FormData(form);
+    var xhr = new XMLHttpRequest();
+    xhr.open("POST", form.action, true);
+    xhr.setRequestHeader("Content-Type", "application/json");
+    xhr.onreadystatechange = function () {
+      if (xhr.readyState === 4 && xhr.status === 201) {
+            console.log(xhr.responseText);
+        }
+    };
+    xhr.send(data);
+}
+
 function makeHero(event) {
     event.preventDefault(); // prevent the form from being submitted
     
@@ -25,7 +40,8 @@ function makeHero(event) {
     hero.city = $form.city.value;
     hero.origin = $form.origin.value;
     
-    alert(JSON.stringify(hero)); // convert object to JSON string and display an alert dialog
+    //alert(JSON.stringify(hero)); // convert object to JSON string and display an alert dialog
+    send(JSON.stringify(hero));
 }
 
 function validateInline(event) {
@@ -43,5 +59,17 @@ function validateInline(event) {
     }
 }
 
-$form.addEventListener('submit', makeHero, false);
+function send(hero) {
+    var xhr = new XMLHttpRequest();
+    xhr.open("POST", "http://validate.jsontest.com", true);
+    xhr.setRequestHeader("Content-Type", "application/json");
+    xhr.onreadystatechange = function() {
+        if (xhr.readyState === 4 && xhr.status === 201) {
+            console.log(xhr.responseText);
+        }
+    };
+    xhr.send(hero);
+}
+
+$form.addEventListener('submit', submitHero, false);
 $form.name.addEventListener("blue", validateInline, false);
