@@ -23,6 +23,22 @@
     var $timer = document.getElementById("timer");
 
     // Function Definitions
+    
+    // AJAX function
+    // gets the question JSON file using ajax
+    function getQuiz() {
+        var xhr = new XMLHttpRequest();
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState === 4 && xhr.status === 200) {
+                var quiz = JSON.parse(xhr.responseText);
+                new Game(quiz);
+            }
+        };
+        xhr.open("GET", "https://s3.amazonaws.com/sitepoint-book-content/jsninja/quiz.json", true);
+        xhr.overrideMimeType("application/json");
+        xhr.send();
+        update($question, "Waiting for questions...");
+    }
 
     /// view function ///
     function update(element, content, klass) {
@@ -45,7 +61,7 @@
     }
     
     // Event Listeners
-    $start.addEventListener('click', function () { new Game(quiz); }, false);
+    $start.addEventListener('click', getQuiz, false);
     
      // hide the form at the start of the game
     hideElement($form);
@@ -67,7 +83,7 @@
     // Create a Game constructor instead of using the play function
     function Game(quiz) {
         this.questions = quiz.questions;
-        this.promptPhrase = quiz.promptPhrase;
+        this.promptPhrase = quiz.question;
         this.score = 0; //initialize score
         update($score, this.score);
         //initialize timer and set up an interval that counts down
