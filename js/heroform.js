@@ -41,7 +41,10 @@ function makeHero(event) {
     hero.origin = $form.origin.value;
     
     //alert(JSON.stringify(hero)); // convert object to JSON string and display an alert dialog
-    send(JSON.stringify(hero));
+    //send(JSON.stringify(hero));
+    if(window.localStorage) {
+        localStorage.setItem(hero.name, JSON.stringify(hero);
+    }
 }
 
 function validateInline(event) {
