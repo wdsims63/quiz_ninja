@@ -20,6 +20,7 @@
     var $feedback = document.getElementById("feedback");
     var $start = document.getElementById("start");
     var $form = document.getElementById("answer");
+    var $hiScore = document.getElementById("hiScore");
     var $timer = document.getElementById("timer");
 
     // Function Definitions
@@ -176,11 +177,27 @@
         
     Game.prototype.gameOver = function () {
         console.log("gameOver() invoked");
+        this.hiScore();
         // inform the player that the game has finished and tell them how many points they have scored
         update($question, "Game Over, you scored " + this.score + " points.");
         // stop the countdown interval
         window.clearInterval(this.interval);
         hideElement($form);
         showElement($start);
+    };
+    
+    Game.prototype.hiScore = function () {
+        if (window.localStorage) {
+            // the value held in localStorage is initally null so make it 0
+            var hi = localStorage.getItem("hiScore") || 0;
+            console.log("Current Hi Score: " + hi);
+            // check if the hi-score has been beaten and display a message if it has
+            if (this.score > hi || hi === 0) {
+                localStorage.setItem("hiScore", this.score);
+                console.log("Updated Hi Score.");
+            }
+            return localStorage.getItem("hiScore");
+            update($hiScore, hi);
+        }
     };
 }());
