@@ -1,5 +1,35 @@
 (function () {
     "use strict";
+    
+    var view = (function () {
+        function update(element, content, klass) {
+            var p = element.firstChild || document.createElement("p");
+            p.textContent = content;
+            element.appendChild(p);
+            if (klass) {
+                p.className = klass;
+            }
+        }
+        function hide(element) {
+            element.style.display = "none";
+        }
+        function show(element) {
+            element.style.display = "block";
+        }
+        return {
+            question: document.getElementById("question"),
+            score: document.getElementById("score"),
+            feedback: document.getElementById("feedback"),
+            start: document.getElementById("start"),
+            form: document.getElementById("answer"),
+            timer: document.getElementById("timer"),
+            hiScore: document.getElementById("hiScore"),
+            update: update,
+            hide: hide,
+            show: show
+        };
+    }());
+    
     var quiz = {
         "name": "Super Hero Name Quiz",
         "description": "How many super heroes can you name?",
@@ -14,22 +44,13 @@
         ]
     };
 
-    //// dom references ////
-    var $question = document.getElementById("question");
-    var $score = document.getElementById("score");
-    var $feedback = document.getElementById("feedback");
-    var $start = document.getElementById("start");
-    var $form = document.getElementById("answer");
-    var $hiScore = document.getElementById("hiScore");
-    var $timer = document.getElementById("timer");
-
     // Function Definitions
     
     // AJAX function
     // gets the question JSON file using ajax
     function getQuiz() {
         var xhr = new XMLHttpRequest();
-        xhr.onreadystatechange = function() {
+        xhr.onreadystatechange = function () {
             if (xhr.readyState === 4 && xhr.status === 200) {
                 var quiz = JSON.parse(xhr.responseText);
                 new Game(quiz);
@@ -38,34 +59,14 @@
         xhr.open("GET", "https://s3.amazonaws.com/sitepoint-book-content/jsninja/quiz.json", true);
         xhr.overrideMimeType("application/json");
         xhr.send();
-        update($question, "Waiting for questions...");
+        view.update(view.question, "Waiting for questions...");
     }
 
-    /// view function ///
-    function update(element, content, klass) {
-        var p = element.firstChild || document.createElement("p");
-        p.textContent = content;
-        element.appendChild(p);
-        if (klass) {
-            p.className = klass;
-        }
-    }
-   
-    function hideElement(el) {
-        //console.log(el);
-        el.style.display = "none";
-    }
-
-    function showElement(el) {
-        el.style.display = "block";
-        //console.log("Element to show: " + el);
-    }
-    
     // Event Listeners
-    $start.addEventListener('click', getQuiz, false);
+    view.start.addEventListener('click', getQuiz, false);
     
      // hide the form at the start of the game
-    hideElement($form);
+    view.hide(view.form);
     
     //Random Function
     function random(a, b, callback) {
@@ -86,16 +87,16 @@
         this.questions = quiz.questions;
         this.promptPhrase = quiz.question;
         this.score = 0; //initialize score
-        update($score, this.score);
+        view.update(view.score, this.score);
         //initialize timer and set up an interval that counts down
         this.time = 20;
-        update($timer, this.time);
+        view.update(view.timer, this.time);
         this.interval = window.setInterval(this.countDown.bind(this), 1000);
         //hide button and show form
-        hideElement($start);
-        showElement($form);
+        view.hide(view.start);
+        view.show(view.form);
         //add event listener to form for when an answer is chosen
-        $form.addEventListener('click', function (event) {
+        view.form.addEventListener('click', function (event) {
             event.preventDefault();
             this.check(event.target.value);
         }.bind(this), false);
@@ -118,9 +119,9 @@
         var quiz = this;
         // set the question.asked property to true so it's not asked again
         question.asked = true;
-        update($question, this.promptPhrase + question.question + "?");
+        view.update(view.question, this.promptPhrase + question.question + "?");
         //clear the previous options
-        $form.innerHTML = "";
+        view.form.innerHTML = "";
         //create an array to put the different option in and a button variable
         var options = [], button;
         var option1 = chooseOption();
@@ -134,7 +135,7 @@
             button = document.createElement("button");
             button.value = name;
             button.textContent = name;
-            $form.appendChild(button);
+            view.form.appendChild(button);
         });
 
         //choose an option from all the possible answers but without chosing the same option twice
@@ -153,12 +154,12 @@
         console.log("check() called");
         console.log("You chose " + answer);
         if (answer === this.question.answer) {
-            update($feedback, "Correct!", "correct");
+            view.update(view.feedback, "Correct!", "correct");
             //increase score by 1
             this.score++;
-            update($score, this.score);
+            view.update(view.score, this.score);
         } else {
-            update($feedback, "Wrong!", "wrong");
+            view.update(view.feedback, "Wrong!", "wrong");
         }
         this.chooseQuestion();
     };
@@ -168,7 +169,7 @@
         // decrease time by 1
         this.time--;
         // update the time displayed
-        update($timer, this.time);
+        view.update(view.timer, this.time);
         //the game is over if the timer has reached 0
         if (this.time <= 0) {
             this.gameOver();
@@ -179,11 +180,11 @@
         console.log("gameOver() invoked");
         this.hiScore();
         // inform the player that the game has finished and tell them how many points they have scored
-        update($question, "Game Over, you scored " + this.score + " points.");
+        view.update(view.question, "Game Over, you scored " + this.score + " points.");
         // stop the countdown interval
         window.clearInterval(this.interval);
-        hideElement($form);
-        showElement($start);
+        view.hide(view.form);
+        view.show(view.start);
     };
     
     Game.prototype.hiScore = function () {
@@ -196,8 +197,8 @@
                 localStorage.setItem("hiScore", this.score);
                 console.log("Updated Hi Score.");
             }
+            view.update(view.hiScore, hi);
             return localStorage.getItem("hiScore");
-            update($hiScore, hi);
         }
     };
 }());
